@@ -9,7 +9,10 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
 
   const port = 3005;
-  await app.listen(port);
+  const host = '192.168.137.244'; // Khai báo IP bạn muốn chạy
+
+  // Truyền host vào làm tham số thứ 2
+  await app.listen(port, host);
   logger.log(`💳 Payment Service (HTTP) is running on http://localhost:${port}`);
 }
 bootstrap();

@@ -24,7 +24,10 @@ async function bootstrap() {
   });
 
   const port = configService.get('PORT') || 3000;
-  await app.listen(port);
+  const host = '192.168.137.244'; // Khai báo IP bạn muốn chạy
+
+  // Truyền host vào làm tham số thứ 2
+  await app.listen(port, host);
 
   logger.log(`🚀 API Gateway (HTTP) is running on http://localhost:${port}`);
   logger.log(`📋 Endpoints (all via TCP microservices):`);

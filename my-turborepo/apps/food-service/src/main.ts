@@ -7,9 +7,11 @@ async function bootstrap() {
   const logger = new Logger('FoodService');
 
   app.enableCors({ origin: '*' });
-
   const port = 3002;
-  await app.listen(port);
+  const host = '192.168.137.244'; // Khai báo IP bạn muốn chạy
+
+  // Truyền host vào làm tham số thứ 2
+  await app.listen(port, host);
   logger.log(`🍔 Food Service (HTTP) is running on http://localhost:${port}`);
 }
 bootstrap();
