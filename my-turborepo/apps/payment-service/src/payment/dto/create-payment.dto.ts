@@ -1,9 +1,13 @@
 import { IsNotEmpty, IsNumber, IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class CreatePaymentDto {
+  @IsString({ message: 'Order ID phải là chuỗi' })
+  @IsNotEmpty({ message: 'Order ID không được để trống' })
+  orderId: string;
+
   @IsNumber({}, { message: 'Số tiền phải là một số' })
-  @IsNotEmpty({ message: 'Số tiền không được để trống' })
-  amount: number;
+  @IsOptional()
+  amount?: number;
 
   @IsString({ message: 'Mô tả phải là chuỗi' })
   @IsOptional()

@@ -1,28 +1,23 @@
 import { NestFactory } from '@nestjs/core';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { AppModule } from './app.module';
-import { ValidationPipe, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
   const logger = new Logger('PaymentService');
 
-  // Enable CORS
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
-
-  // Validation pipe
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-    }),
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        host: '0.0.0.0',
+        port: 3005,
+      },
+    },
   );
 
-  const port = 3005;
-  await app.listen(port);
-  logger.log(`Payment Service is running on port ${port}`);
+  await app.listen();
+  logger.log('💰 Payment Service (TCP) is running on port 3005');
 }
 bootstrap();
