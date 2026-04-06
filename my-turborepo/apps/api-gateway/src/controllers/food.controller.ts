@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
-const FOOD_URL = 'http://localhost:3002';
+const FOOD_URL = 'http://192.168.137.49:3002';
 
 @Controller('foods')
 export class FoodController {

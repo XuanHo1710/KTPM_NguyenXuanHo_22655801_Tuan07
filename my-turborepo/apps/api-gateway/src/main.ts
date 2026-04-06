@@ -23,11 +23,11 @@ async function bootstrap() {
     defaultVersion: ['1'],
   });
 
-  const port = 3000;
+  const port = 3006;
   const host = '192.168.137.49';
   await app.listen(port, host);
 
-  logger.log(`🚀 API Gateway (HTTP) is running on http://localhost:${port}`);
+  logger.log(`🚀 API Gateway (HTTP) is running on http://${host}:${port}`);
   logger.log(`📋 Endpoints (all via TCP microservices):`);
   logger.log(`   POST  /api/v1/users/register`);
   logger.log(`   POST  /api/v1/users/login`);

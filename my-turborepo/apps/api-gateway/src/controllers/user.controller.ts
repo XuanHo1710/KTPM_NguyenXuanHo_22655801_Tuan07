@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Headers } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
-const USER_URL = 'http://localhost:3001';
+const USER_URL = 'http://192.168.137.49:3001';
 
 @Controller('users')
 export class UserController {

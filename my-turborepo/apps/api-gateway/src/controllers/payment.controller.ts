@@ -2,7 +2,7 @@ import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
-const PAYMENT_URL = 'http://localhost:3005';
+const PAYMENT_URL = 'http://192.168.137.49:3005';
 
 @Controller('payments')
 export class PaymentController {

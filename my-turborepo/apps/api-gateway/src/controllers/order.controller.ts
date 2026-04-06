@@ -2,7 +2,7 @@ import { Controller, Get, Post, Param, Body } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
-const ORDER_URL = 'http://localhost:3003';
+const ORDER_URL = 'http://192.168.137.49:3003';
 
 @Controller('orders')
 export class OrderController {

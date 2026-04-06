@@ -11,8 +11,8 @@ const { PayOS } = require('@payos/node');
 @Injectable()
 export class PaymentService {
   private readonly logger = new Logger(PaymentService.name);
-  private readonly ORDER_SERVICE_URL = 'http://localhost:3003';
-  private readonly NOTIFICATION_SERVICE_URL = 'http://localhost:3004';
+  private readonly ORDER_SERVICE_URL = 'http://192.168.137.49:3003';
+  private readonly NOTIFICATION_SERVICE_URL = 'http://192.168.137.49:3004';
   private payos: any;
 
   constructor(
