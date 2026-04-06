@@ -9,7 +9,8 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
 
   const port = 3003;
-  await app.listen(port);
+  const host = '192.168.137.49';
+  await app.listen(port, host);
   logger.log(`🛒 Order Service (HTTP) is running on http://localhost:${port}`);
 }
 bootstrap();

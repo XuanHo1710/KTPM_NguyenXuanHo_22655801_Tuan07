@@ -90,14 +90,13 @@ export class PaymentService {
         cancelUrl,
       };
 
-      // PayOS v2: dùng post method
-      const payosResponse = await this.payos.post('/v2/payment-requests', paymentData);
+      // PayOS v2: dùng API chuẩn
+      const payosResponse = await this.payos.paymentRequests.create(paymentData);
 
-      this.logger.log(`🔗 PayOS response: ${JSON.stringify(payosResponse?.data || payosResponse)}`);
+      this.logger.log(`🔗 PayOS response: ${JSON.stringify(payosResponse)}`);
 
-      const responseData = payosResponse?.data || payosResponse;
-      const checkoutUrl = responseData?.checkoutUrl || responseData?.data?.checkoutUrl;
-      const qrCode = responseData?.qrCode || responseData?.data?.qrCode;
+      const checkoutUrl = payosResponse?.checkoutUrl;
+      const qrCode = payosResponse?.qrCode;
 
       if (checkoutUrl) {
         return {
@@ -152,8 +151,7 @@ export class PaymentService {
   async handlePayosCallback(paymentCode: number) {
     try {
       // PayOS v2: GET payment info
-      const payosResponse = await this.payos.get(`/v2/payment-requests/${paymentCode}`);
-      const payosInfo = payosResponse?.data || payosResponse;
+      const payosInfo = await this.payos.paymentRequests.get(paymentCode);
       this.logger.log(`PayOS info for ${paymentCode}: status=${payosInfo?.status}`);
 
       const payment = await this.paymentModel.findOne({ paymentCode });
