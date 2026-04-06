@@ -1,20 +1,23 @@
 import { NestFactory } from '@nestjs/core';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
   const logger = new Logger('NotificationService');
 
-  // Enable CORS
-  app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-  });
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        host: '0.0.0.0',
+        port: 3004,
+      },
+    },
+  );
 
-  const port = 3004;
-  await app.listen(port);
-  logger.log(`Notification Service is running on port ${port}`);
+  await app.listen();
+  logger.log('📧 Notification Service (TCP) is running on port 3004');
 }
 bootstrap();

@@ -9,6 +9,9 @@ export class Payment {
   @Prop({ required: true })
   paymentCode: number;
 
+  @Prop({ default: '' })
+  orderId: string;
+
   @Prop({ required: true })
   amount: number;
 
@@ -30,6 +33,9 @@ export class Payment {
 
   @Prop({ default: '' })
   customerEmail: string;
+
+  @Prop({ type: Object, default: null })
+  orderInfo: Record<string, any>;
 }
 
 export const PaymentSchema = SchemaFactory.createForClass(Payment);

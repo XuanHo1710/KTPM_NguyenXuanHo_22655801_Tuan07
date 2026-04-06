@@ -1,20 +1,16 @@
-import { Controller, Post, Body, Logger } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { NotificationService } from './notification.service';
 
-@Controller('notification')
+@Controller()
 export class NotificationController {
   private readonly logger = new Logger(NotificationController.name);
 
   constructor(private readonly notificationService: NotificationService) {}
 
-  /**
-   * POST /notification/send-payment-confirmation
-   * Nhận request từ payment-service sau khi thanh toán thành công
-   * Gửi email xác nhận thanh toán qua Brevo
-   */
-  @Post('send-payment-confirmation')
+  @MessagePattern('notification.sendPaymentConfirmation')
   async sendPaymentConfirmation(
-    @Body()
+    @Payload()
     data: {
       email: string;
       paymentCode: number;
@@ -43,13 +39,9 @@ export class NotificationController {
     };
   }
 
-  /**
-   * POST /notification/send-mail
-   * Gửi email thông thường
-   */
-  @Post('send-mail')
+  @MessagePattern('notification.sendMail')
   async sendMail(
-    @Body()
+    @Payload()
     data: {
       email: string;
       subject: string;
@@ -67,6 +59,26 @@ export class NotificationController {
     return {
       success: result,
       message: result ? 'Email đã được gửi thành công' : 'Gửi email thất bại',
+    };
+  }
+
+  @MessagePattern('notification.send')
+  async sendNotification(
+    @Payload()
+    data: {
+      userId: number;
+      userName: string;
+      orderId: string;
+      message: string;
+    },
+  ) {
+    this.logger.log(`📢 NOTIFICATION: ${data.message}`);
+    this.logger.log(`   User: ${data.userName} (ID: ${data.userId})`);
+    this.logger.log(`   Order: #${data.orderId}`);
+
+    return {
+      success: true,
+      message: data.message,
     };
   }
 }
