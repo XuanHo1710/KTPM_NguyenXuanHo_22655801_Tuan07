@@ -9,9 +9,7 @@ async function bootstrap() {
   app.enableCors({ origin: '*' });
 
   const port = 3004;
-  const host = '192.168.137.244'; // Khai báo IP bạn muốn chạy
-
-  // Truyền host vào làm tham số thứ 2
+  const host = '192.168.137.49';
   await app.listen(port, host);
   logger.log(`📧 Notification Service (HTTP) is running on http://localhost:${port}`);
 }

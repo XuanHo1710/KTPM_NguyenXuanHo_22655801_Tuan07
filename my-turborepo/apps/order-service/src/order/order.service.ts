@@ -9,7 +9,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 @Injectable()
 export class OrderService {
   private readonly logger = new Logger(OrderService.name);
-  private readonly FOOD_SERVICE_URL = 'http://localhost:3002';
+  private readonly FOOD_SERVICE_URL = 'http://192.168.137.49:3002';
 
   constructor(
     @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
