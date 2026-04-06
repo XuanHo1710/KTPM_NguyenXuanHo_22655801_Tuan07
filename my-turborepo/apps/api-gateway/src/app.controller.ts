@@ -1,14 +1,11 @@
-import { Controller, Get, Inject } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(
-    @Inject('PRODUCT_SERVICE') private readonly productClient: ClientProxy,
-  ) {}
-
-  @Get()
-  getHello() {
-    return this.productClient.send('product.created', {});
+  @Get('health')
+  getHealth() {
+    return {
+      message: 'API Gateway is running',
+    };
   }
 }

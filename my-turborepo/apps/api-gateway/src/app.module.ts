@@ -1,23 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { AuthController } from './auth.controller';
+import { UsersController } from './users.controller';
+import { UserServiceProxy } from './user-service.proxy';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ClientsModule.register([
-      {
-        name: 'PRODUCT_SERVICE',
-        transport: Transport.TCP,
-        options: {
-          port: 3001,
-        },
-      },
-    ]),
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController, UsersController],
+  providers: [UserServiceProxy],
 })
 export class AppModule {}

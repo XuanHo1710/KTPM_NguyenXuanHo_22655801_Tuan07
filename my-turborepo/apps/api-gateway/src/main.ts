@@ -23,8 +23,8 @@ async function bootstrap() {
 
   // Config CORS
   app.enableCors({
-    origin: ['http://localhost:3000'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: [/^http:\/\/localhost:\d+$/, /^http:\/\/127\.0\.0\.1:\d+$/],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     preflightContinue: false,
     credentials: true,
   });
@@ -40,6 +40,7 @@ async function bootstrap() {
     defaultVersion: ['1'],
   });
 
-  await app.listen(configService.get('PORT') as string);
+  const port = Number(configService.get('PORT') ?? 3002);
+  await app.listen(port);
 }
 bootstrap();
