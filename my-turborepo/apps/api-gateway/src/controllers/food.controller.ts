@@ -1,56 +1,40 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Body,
-  Param,
-  Inject,
-} from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom, timeout } from 'rxjs';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
+
+const FOOD_URL = 'http://localhost:3002';
 
 @Controller('foods')
 export class FoodController {
-  constructor(
-    @Inject('FOOD_SERVICE') private readonly foodClient: ClientProxy,
-  ) {}
+  constructor(private readonly http: HttpService) {}
 
   @Get()
   async findAll() {
-    return firstValueFrom(
-      this.foodClient.send('food.findAll', {}).pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.get(`${FOOD_URL}/foods`));
+    return data;
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return firstValueFrom(
-      this.foodClient.send('food.findOne', id).pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.get(`${FOOD_URL}/foods/${id}`));
+    return data;
   }
 
   @Post()
   async create(@Body() body: any) {
-    return firstValueFrom(
-      this.foodClient.send('food.create', body).pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.post(`${FOOD_URL}/foods`, body));
+    return data;
   }
 
   @Put(':id')
   async update(@Param('id') id: string, @Body() body: any) {
-    return firstValueFrom(
-      this.foodClient
-        .send('food.update', { id, updateFoodDto: body })
-        .pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.put(`${FOOD_URL}/foods/${id}`, body));
+    return data;
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return firstValueFrom(
-      this.foodClient.send('food.delete', id).pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.delete(`${FOOD_URL}/foods/${id}`));
+    return data;
   }
 }

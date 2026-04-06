@@ -121,6 +121,14 @@ export class AppService {
     };
   }
 
+  async findOne(id: string): Promise<PublicUser | null> {
+    const user = await this.userModel.findById(id).exec();
+    if (!user) {
+      return null;
+    }
+    return this.toPublicUser(user);
+  }
+
   private toPublicUser(user: UserDocument): PublicUser {
     return {
       id: user._id.toString(),

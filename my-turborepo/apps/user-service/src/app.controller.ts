@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -6,9 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('register')
-  register(
-    @Body() body: { username?: string; email?: string; password?: string },
-  ) {
+  register(@Body() body: { username?: string; email?: string; password?: string }) {
     return this.appService.register(body);
   }
 
@@ -20,5 +18,10 @@ export class AppController {
   @Get('users')
   getUsers(@Headers('authorization') authorization?: string) {
     return this.appService.getUsers(authorization);
+  }
+
+  @Get('users/:id')
+  findOne(@Param('id') id: string) {
+    return this.appService.findOne(id);
   }
 }

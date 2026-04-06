@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { authService, AuthApiError } from "@/services/authService";
+import { authService, ApiError } from "@/services/authService";
+import { useRouter } from "next/navigation";
 
 type AuthMode = "login" | "register";
 
@@ -14,6 +15,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function AuthCard({ mode }: AuthCardProps) {
   const isRegister = mode === "register";
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -64,14 +66,20 @@ export default function AuthCard({ mode }: AuthCardProps) {
         if (result.accessToken) {
           localStorage.setItem("accessToken", result.accessToken);
         }
+        if (result.user) {
+          localStorage.setItem("user", JSON.stringify(result.user));
+        }
 
         setMessageType("ok");
         setMessage(result.message || "Đăng nhập thành công.");
+
+        // Redirect to dashboard after login
+        setTimeout(() => router.push("/dashboard"), 800);
       }
     } catch (error) {
       setMessageType("error");
 
-      if (error instanceof AuthApiError) {
+      if (error instanceof ApiError) {
         setMessage(error.message);
       } else if (error instanceof Error) {
         setMessage(error.message);
@@ -91,7 +99,7 @@ export default function AuthCard({ mode }: AuthCardProps) {
             <h2>{isRegister ? "Đăng ký tài khoản" : "Đăng nhập"}</h2>
             <p>
               {isRegister
-                ? "Tạo tài khoản mới để bắt đầu trò chuyện"
+                ? "Tạo tài khoản mới để bắt đầu đặt món"
                 : "Chào mừng bạn quay trở lại"}
             </p>
           </div>
@@ -166,4 +174,3 @@ export default function AuthCard({ mode }: AuthCardProps) {
     </main>
   );
 }
-  

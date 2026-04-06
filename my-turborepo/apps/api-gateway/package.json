@@ -1,7 +1,7 @@
 {
   "name": "api-gateway",
   "version": "0.0.1",
-  "description": "API Gateway - HTTP to TCP proxy",
+  "description": "API Gateway - HTTP proxy",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
@@ -11,11 +11,12 @@
     "start:prod": "node dist/main"
   },
   "dependencies": {
+    "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
-    "@nestjs/microservices": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "axios": "^1.14.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },

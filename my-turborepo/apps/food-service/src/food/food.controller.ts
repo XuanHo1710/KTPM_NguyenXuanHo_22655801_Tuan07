@@ -1,35 +1,34 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 import { FoodService } from './food.service';
 import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
 
-@Controller()
+@Controller('foods')
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
-  @MessagePattern('food.findAll')
+  @Get()
   findAll() {
     return this.foodService.findAll();
   }
 
-  @MessagePattern('food.findOne')
-  findOne(@Payload() id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.foodService.findOne(id);
   }
 
-  @MessagePattern('food.create')
-  create(@Payload() createFoodDto: CreateFoodDto) {
+  @Post()
+  create(@Body() createFoodDto: CreateFoodDto) {
     return this.foodService.create(createFoodDto);
   }
 
-  @MessagePattern('food.update')
-  update(@Payload() data: { id: string; updateFoodDto: UpdateFoodDto }) {
-    return this.foodService.update(data.id, data.updateFoodDto);
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateFoodDto: UpdateFoodDto) {
+    return this.foodService.update(id, updateFoodDto);
   }
 
-  @MessagePattern('food.delete')
-  remove(@Payload() id: string) {
+  @Delete(':id')
+  remove(@Param('id') id: string) {
     return this.foodService.remove(id);
   }
 }

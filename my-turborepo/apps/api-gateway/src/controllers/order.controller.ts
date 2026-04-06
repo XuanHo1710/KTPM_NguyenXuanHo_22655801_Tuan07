@@ -1,30 +1,28 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Inject,
-} from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
-import { firstValueFrom, timeout } from 'rxjs';
+import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
+
+const ORDER_URL = 'http://localhost:3003';
 
 @Controller('orders')
 export class OrderController {
-  constructor(
-    @Inject('ORDER_SERVICE') private readonly orderClient: ClientProxy,
-  ) {}
+  constructor(private readonly http: HttpService) {}
 
   @Get()
   async findAll() {
-    return firstValueFrom(
-      this.orderClient.send('order.findAll', {}).pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.get(`${ORDER_URL}/orders`));
+    return data;
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const { data } = await firstValueFrom(this.http.get(`${ORDER_URL}/orders/${id}`));
+    return data;
   }
 
   @Post()
   async create(@Body() body: any) {
-    return firstValueFrom(
-      this.orderClient.send('order.create', body).pipe(timeout(5000)),
-    );
+    const { data } = await firstValueFrom(this.http.post(`${ORDER_URL}/orders`, body));
+    return data;
   }
 }

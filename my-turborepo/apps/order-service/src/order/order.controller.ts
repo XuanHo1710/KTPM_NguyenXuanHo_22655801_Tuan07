@@ -1,29 +1,28 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Get, Post, Param, Body, Patch } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
-@Controller()
+@Controller('orders')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
-  @MessagePattern('order.findAll')
+  @Get()
   findAll() {
     return this.orderService.findAll();
   }
 
-  @MessagePattern('order.findOne')
-  findOne(@Payload() id: string) {
+  @Get(':id')
+  findOne(@Param('id') id: string) {
     return this.orderService.findOne(id);
   }
 
-  @MessagePattern('order.create')
-  create(@Payload() createOrderDto: CreateOrderDto) {
+  @Post()
+  create(@Body() createOrderDto: CreateOrderDto) {
     return this.orderService.create(createOrderDto);
   }
 
-  @MessagePattern('order.updateStatus')
-  updateStatus(@Payload() data: { orderId: string; status: string }) {
-    return this.orderService.updateStatus(data.orderId, data.status);
+  @Patch(':id/status')
+  updateStatus(@Param('id') id: string, @Body() body: { status: string }) {
+    return this.orderService.updateStatus(id, body.status);
   }
 }
