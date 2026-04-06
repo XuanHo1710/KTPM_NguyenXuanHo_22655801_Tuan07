@@ -8,9 +8,9 @@ async function bootstrap() {
 
   app.enableCors({ origin: '*' });
 
-  const port = 3005;
+  const port = 3001;
   const host = '192.168.137.49';
   await app.listen(port, host);
-  logger.log(`👤 User Service (HTTP) is running on http://localhost:${port}`);
+  logger.log(`👤 User Service (HTTP) is running on http://${host}:${port}`);
 }
 void bootstrap();
